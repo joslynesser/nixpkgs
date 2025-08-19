@@ -19,10 +19,25 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "clockworklabs";
     repo = "spacetimedb";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-fUs3EdyOzUogEEhSOnpFrA1LeivEa/crmlhQcf2lGUE=";
+    hash = "sha256-pgn4/JfSWKWqEQnGuXBLQAGxP/dLyR5nxh0rpMx20oo=";
+
+    # extract git commit to provide in build.rs
+    leaveDotGit = true;
+    postFetch = ''
+      cd "$out"
+      git rev-parse HEAD > $out/COMMIT
+      find "$out" -name .git -print0 | xargs -0 rm -rf
+    ''
   };
 
   cargoHash = "sha256-EWLfAyYN/U2kt03lmR8mVXc+j/DbjFat+RysNUt99QI=";
+
+  postPatch = ''
+    substituteInPlace crates/cli/build.rs crates/lib/build.rs \
+      --replace-fail \
+        'Command::new("git").args(["rev-parse", "HEAD"])' \
+        'Command::new("cat").args(["COMMIT"])'
+  '';
 
   nativeBuildInputs = [
     pkg-config
