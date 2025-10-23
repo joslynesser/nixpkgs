@@ -13,13 +13,13 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "spacetimedb";
-  version = "1.5.0";
+  version = "1.6.0";
 
   src = fetchFromGitHub {
     owner = "clockworklabs";
     repo = "spacetimedb";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-pgn4/JfSWKWqEQnGuXBLQAGxP/dLyR5nxh0rpMx20oo=";
+    hash = "sha256-QtNc/5ezhqyKlnqyakqdRiC2stjRjR+R5gfbuT4WOrc=";
 
     # extract git commit to provide in build.rs
     leaveDotGit = true;
@@ -27,10 +27,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
       cd "$out"
       git rev-parse HEAD > $out/COMMIT
       find "$out" -name .git -print0 | xargs -0 rm -rf
-    ''
+    '';
   };
 
-  cargoHash = "sha256-EWLfAyYN/U2kt03lmR8mVXc+j/DbjFat+RysNUt99QI=";
+  cargoHash = "sha256-eNUh8tYef4WkT6cZvnBmjkqX6QNuysZ25AfKvOtWqCo=";
 
   postPatch = ''
     substituteInPlace crates/cli/build.rs crates/lib/build.rs \
